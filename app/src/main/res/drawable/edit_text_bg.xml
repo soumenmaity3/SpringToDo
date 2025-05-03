@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Background Color -->
+    <solid android:color="#FFFFFF" />  <!-- Change to your desired background color -->
+
+    <!-- Border (Stroke) -->
+    <stroke
+        android:width="2dp"
+        android:color="#2196F3" />  <!-- Border color (blue in this example) -->
+
+    <!-- Rounded Corners -->
+    <corners android:radius="8dp" />  <!-- Adjust for more or less rounding -->
+
+    <!-- Padding inside EditText (optional) -->
+    <padding
+        android:left="12dp"
+        android:right="12dp"
+        android:top="8dp"
+        android:bottom="8dp" />
+</shape>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/taskOption"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_rounded"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What You Want"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:gravity="center" />
+
+    <!-- Options -->
+    <TextView
+        android:id="@+id/editTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Edit Task"
+        android:textColor="#2E47D4"
+        android:textSize="18sp"
+        android:padding="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/setTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Set Timer"
+        android:textColor="#2E47D4"
+        android:textSize="18sp"
+        android:padding="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/deleteTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Delete Task"
+        android:textColor="#D32F2F"
+        android:textSize="18sp"
+        android:padding="12dp"
+        android:background="?attr/selectableItemBackground" />
+
+</LinearLayout>
