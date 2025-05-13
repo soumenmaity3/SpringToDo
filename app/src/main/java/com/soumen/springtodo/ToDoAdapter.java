@@ -75,6 +75,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
                 Button btnEdt;
                 EditText edtTask,edtDescription;
                 edtTask=edtDialog.findViewById(R.id.edtTask);
+                TextView textView=edtDialog.findViewById(R.id.textView);
+                textView.setText("Edit Task");
                 edtDescription=edtDialog.findViewById(R.id.edtDes);
                 btnEdt=edtDialog.findViewById(R.id.btnAdd);
                 CheckBox checkBoxTimer = edtDialog.findViewById(R.id.checkBoxTimer);

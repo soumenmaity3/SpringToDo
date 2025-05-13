@@ -96,6 +96,8 @@ public class ReadToDoActivity extends AppCompatActivity {
             CheckBox checkBoxTimer = dialog.findViewById(R.id.checkBoxTimer);
             EditText editTextHr = dialog.findViewById(R.id.editTextHr);
             EditText editTextMin = dialog.findViewById(R.id.editTextMin);
+            TextView textView=dialog.findViewById(R.id.textView);
+            textView.setText("Edit Task");
 
             checkBoxTimer.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 editTextHr.setEnabled(isChecked);
@@ -104,7 +106,7 @@ public class ReadToDoActivity extends AppCompatActivity {
 
             edtTittle.setText(tittle);
             edtTask.setText(task);
-            btnEdit.setText("Edit");
+            btnEdit.setText("Edit Task");
 
             btnEdit.setOnClickListener(ve -> {
                 String editTask = edtTask.getText().toString();
