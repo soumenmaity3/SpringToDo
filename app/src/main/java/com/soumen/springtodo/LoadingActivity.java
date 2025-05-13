@@ -41,7 +41,7 @@ public class LoadingActivity extends AppCompatActivity {
         txtSever = findViewById(R.id.txtSever);
         sendRequest = findViewById(R.id.sendRequest);
 
-        new Handler().postDelayed(() -> checkServerStatus("http://192.168.52.150:8080/users/ping"), 1000);
+        new Handler().postDelayed(() -> checkServerStatus("http://192.168.226.150:8080/users/ping"), 1000);
 
         sendRequest.setOnClickListener(v -> {
             String email = "sm8939912@gmail.com";

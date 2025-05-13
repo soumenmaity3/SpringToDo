@@ -1,5 +1,7 @@
 package com.soumen.springtodo;
 
+import static com.soumen.springtodo.R.drawable.*;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -38,11 +41,12 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     ToDoAdapter adapter;
-    FloatingActionButton floatAction,floatingMenu;
-    String email,password;
+    FloatingActionButton floatAction, floatingMenu;
+    String email, password;
     private long backPressedTime;
     private Toast backToast;
     ArrayList<ToDoModel> todoList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView marqueeText = findViewById(R.id.marqueeText);
         marqueeText.setSelected(true);
-        marqueeText.setOnClickListener(v->{
-            AlertDialog.Builder dialog2=new AlertDialog.Builder(this);
+        marqueeText.setOnClickListener(v -> {
+            AlertDialog.Builder dialog2 = new AlertDialog.Builder(this);
             dialog2.setTitle("Alert")
                     .setMessage("To edit a task, long-press on it!\n Stay focused. Stay productive. \uD83D\uDCAA")
                     .show();
@@ -66,19 +70,28 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         floatAction = findViewById(R.id.floatingButtonForAddTask);
-        floatingMenu=findViewById(R.id.floatingMenu);
-         todoList = (ArrayList<ToDoModel>) getIntent().getSerializableExtra("todoList");
+        floatingMenu = findViewById(R.id.floatingMenu);
+        todoList = (ArrayList<ToDoModel>) getIntent().getSerializableExtra("todoList");
 
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
-        password=intent.getStringExtra("password");
+        password = intent.getStringExtra("password");
         floatAction.setOnClickListener(v -> {
             Dialog dialog = new Dialog(MainActivity.this);
             dialog.setContentView(R.layout.add_task_lay);
             EditText edtTask = dialog.findViewById(R.id.edtTask);
             EditText edtDes = dialog.findViewById(R.id.edtDes);
             Button btnAdd = dialog.findViewById(R.id.btnAdd);
+            CheckBox checkBoxTimer = dialog.findViewById(R.id.checkBoxTimer);
+            EditText editTextHr = dialog.findViewById(R.id.editTextHr);
+            EditText editTextMin = dialog.findViewById(R.id.editTextMin);
+
+            checkBoxTimer.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                editTextHr.setEnabled(isChecked);
+                editTextMin.setEnabled(isChecked);
+            });
+
             btnAdd.setOnClickListener(view -> {
                 String title = edtTask.getText().toString().trim();
                 String description = edtDes.getText().toString().trim();
@@ -98,33 +111,39 @@ public class MainActivity extends AppCompatActivity {
         floatingMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog dialog3=new Dialog(MainActivity.this);
+                floatingMenu.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.close));
+                Dialog dialog3 = new Dialog(MainActivity.this);
                 dialog3.setContentView(R.layout.list_dialog);
-                TextView txtProfile,txtAlarm,txtSetting;
-                txtProfile=dialog3.findViewById(R.id.editTask);
-                txtAlarm=dialog3.findViewById(R.id.setTimer);
-                txtSetting=dialog3.findViewById(R.id.deleteTask);
+                TextView txtProfile, txtAlarm, txtSetting;
+                txtProfile = dialog3.findViewById(R.id.editTask);
+                txtAlarm = dialog3.findViewById(R.id.setTimer);
+                txtSetting = dialog3.findViewById(R.id.deleteTask);
                 txtProfile.setText("Profile");
                 txtAlarm.setText("Alarm");
                 txtSetting.setText("Setting");
                 txtSetting.setTextColor(Color.parseColor("#2E47D4"));
 
-                txtProfile.setOnClickListener(v->{
-                    Intent intent=new Intent(MainActivity.this,ProfileActivity.class);
-                    intent.putExtra("email",email);
+                txtProfile.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    intent.putExtra("email", email);
                     startActivity(intent);
                     dialog3.dismiss();
+                    floatingMenu.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.menu));
                 });
 
-                txtSetting.setOnClickListener(v->{
-                    Intent intent1=new Intent(MainActivity.this,SettingActivity.class);
-                    intent1.putExtra("email",email);
-                    intent1.putExtra("password",password);
+                txtSetting.setOnClickListener(v -> {
+                    Intent intent1 = new Intent(MainActivity.this, SettingActivity.class);
+                    intent1.putExtra("email", email);
+                    intent1.putExtra("password", password);
                     startActivity(intent1);
                     dialog3.dismiss();
+                    floatingMenu.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.menu));
+                });
+                dialog3.show();
+                dialog3.setOnDismissListener(dialog -> {
+                    floatingMenu.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.menu));
                 });
 
-                dialog3.show();
             }
         });
 
@@ -133,13 +152,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-
-
     }
 
     public void addTask(String email, String title, String description) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        String url = "http://192.168.52.150:8080/users/add_task";
+        String url = "http://192.168.226.150:8080/users/add_task";
 
         JSONObject userObject = new JSONObject();
         try {

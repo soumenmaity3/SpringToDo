@@ -77,13 +77,23 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
                 edtTask=edtDialog.findViewById(R.id.edtTask);
                 edtDescription=edtDialog.findViewById(R.id.edtDes);
                 btnEdt=edtDialog.findViewById(R.id.btnAdd);
+                CheckBox checkBoxTimer = edtDialog.findViewById(R.id.checkBoxTimer);
+                EditText editTextHr =edtDialog.findViewById(R.id.editTextHr);
+                EditText editTextMin =edtDialog.findViewById(R.id.editTextMin);
+
+                checkBoxTimer.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    editTextHr.setEnabled(isChecked);
+                    editTextMin.setEnabled(isChecked);
+                });
+
+
                 edtDescription.setText(model.getTask());
                 edtTask.setText(model.getTitle());
                 btnEdt.setText("Edti Task");
                 btnEdt.setOnClickListener(s->{
                     edtDialog.dismiss();
                     RequestQueue requestQueue = Volley.newRequestQueue(context);
-                    String url="http://192.168.52.150:8080/users/updateTask/"+model.getId();
+                    String url="http://192.168.226.150:8080/users/updateTask/"+model.getId();
                     String tittle=edtTask.getText().toString();
                     String description=edtDescription.getText().toString();
                     JSONObject jsonObject=new JSONObject();
@@ -163,7 +173,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
     }
 
     private void updateCompleteStatus(int todoId) {
-        String url = "http://192.168.52.150:8080/users/updateComplete/" + todoId;
+        String url = "http://192.168.226.150:8080/users/updateComplete/" + todoId;
 
         StringRequest request = new StringRequest(Request.Method.PUT, url,
                 response -> {

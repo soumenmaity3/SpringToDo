@@ -52,6 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         txtSignIn = findViewById(R.id.logIn);
 
+
         btnSubmit.setOnClickListener(v -> {
             try {
                 newRegister();
@@ -74,12 +75,11 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.52.150:8080/users/signup";
+        String url = "http://192.168.226.150:8080/users/signup";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(SignUpActivity.this, "successful", Toast.LENGTH_SHORT).show();
                 edtName.setText(null);
                 edtConfirm.setText(null);
                 edtEmail.setText(null);
@@ -92,11 +92,12 @@ public class SignUpActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                System.out.println(error.getMessage());
-
-                Toast.makeText(SignUpActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
-            }
+                if (error.networkResponse != null && error.networkResponse.statusCode == 409) {
+                    Toast.makeText(SignUpActivity.this, "Email already have an account", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                }
+                error.printStackTrace();}
         }) {
             @Nullable
             @Override

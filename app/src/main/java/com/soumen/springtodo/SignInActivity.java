@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class SignInActivity extends AppCompatActivity {
 Button btnSubmit2;
-TextView txtSignUp;
+TextView txtSignUp,forgotPassword;
 EditText edtSEmail,edtSPassword;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -57,6 +57,14 @@ EditText edtSEmail,edtSPassword;
             isAvailable();
         });
 
+        forgotPassword=findViewById(R.id.txtForgotPassword);
+
+        forgotPassword.setOnClickListener(v->{
+            Intent intent=new Intent(SignInActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         txtSignUp.setOnClickListener(v->{
             Intent intent=new Intent(SignInActivity.this, SignUpActivity.class);
             startActivity(intent);
@@ -68,7 +76,7 @@ EditText edtSEmail,edtSPassword;
         if (!emailChecker() || !passwordChecker()) return;
 
         RequestQueue requestQueue = Volley.newRequestQueue(SignInActivity.this);
-        String url = "http://192.168.52.150:8080/users/login";
+        String url = "http://192.168.226.150:8080/users/login";
 
         String userEmail=edtSEmail.getText().toString();
         String password=edtSPassword.getText().toString();
@@ -86,7 +94,7 @@ EditText edtSEmail,edtSPassword;
                 jsonBody.names(),
                 response -> {
                      // Pass this dynamically
-                    String url2 = "http://192.168.52.150:8080/users/user-name?email=" + userEmail;
+                    String url2 = "http://192.168.226.150:8080/users/user-name?email=" + userEmail;
                     Log.d("useremail", userEmail);
                     RequestQueue queue = Volley.newRequestQueue(this);
 

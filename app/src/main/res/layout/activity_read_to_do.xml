@@ -1,52 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".ReadToDoActivity">
 
-    <TextView
-        android:id="@+id/taskTitle"
+    <!-- Task Content -->
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Task Title"
-        android:textSize="24sp"
-        android:textStyle="bold"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <TextView
+            android:id="@+id/taskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Title"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#CCCCCC" />
+
+        <TextView
+            android:id="@+id/fullTaskText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Full Task Details"
+            android:textSize="16sp" />
+    </LinearLayout>
     <View
+        android:id="@+id/dimOverlay"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="#CCCCCC" />
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/fullTaskText"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="Full Task Details"
-        android:textSize="16sp"/>
+    <!-- Sub FAB: About -->
+    <LinearLayout
+        android:id="@+id/fabAboutLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/fabMain"
+        android:layout_above="@id/fabEditLayout"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textSize="16sp"
+            android:paddingEnd="8dp" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_info"
+            android:contentDescription="About" />
+    </LinearLayout>
+
+    <!-- Sub FAB: Edit -->
+    <LinearLayout
+        android:id="@+id/fabEditLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/fabMain"
+        android:layout_above="@id/fabCloseLayout"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textSize="16sp"
+            android:paddingEnd="8dp" />
+
+        <!-- Your original fabEdit preserved -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="16dp"
-            android:scaleType="fitCenter"
-            android:contentDescription="Edit Task"
             android:src="@drawable/edit"
-        app:backgroundTint="#009688" />
-    </FrameLayout>
+            android:contentDescription="Edit Task"
+            app:backgroundTint="#009688" />
+    </LinearLayout>
 
-</LinearLayout>
+    <!-- Sub FAB: Close -->
+    <LinearLayout
+        android:id="@+id/fabCloseLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/fabMain"
+        android:layout_above="@id/fabMain"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
+            android:contentDescription="Close Menu" />
+    </LinearLayout>
+
+    <!-- Main FAB to toggle menu -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_arrow_up"
+        android:contentDescription="Main Menu" />
+</RelativeLayout>
