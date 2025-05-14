@@ -47,7 +47,8 @@ android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edtSNameLayout"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtSPassword"
@@ -59,6 +60,7 @@ android:layout_margin="15dp"
             android:backgroundTint="@color/colorAccent"
             android:padding="16dp"/>
     </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/txtForgotPassword"
         android:layout_width="match_parent"

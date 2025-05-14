@@ -31,14 +31,12 @@ public class ReadToDoActivity extends AppCompatActivity {
     TextView txtTask, txtTittle;
     FloatingActionButton fabEdit;
     View dimOverlay;
-    Animation rotateForward,rotateBackward;
+    Animation rotateForward,rotateBackward,fabOpenAnim, fabCloseAnim;;
 
     // NEW FAB MENU
     FloatingActionButton fabMain, fabAbout, fabClose;
     private LinearLayout fabAboutLayout, fabEditLayout, fabCloseLayout;
     private boolean isMenuOpen = false;
-    private Animation fabOpenAnim, fabCloseAnim;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +77,6 @@ public class ReadToDoActivity extends AppCompatActivity {
         fabAbout.setOnClickListener(v ->
                 Toast.makeText(this, "About clicked", Toast.LENGTH_SHORT).show());
 
-        // Your original intent and fabEdit logic
         Intent intent = getIntent();
         String task = intent.getStringExtra("task");
         String tittle = intent.getStringExtra("tittle");
@@ -149,7 +146,6 @@ public class ReadToDoActivity extends AppCompatActivity {
         });
     }
 
-    // NEW: Floating menu toggle logic
     private void toggleMenu() {
         if (isMenuOpen) {
             dimOverlay.setVisibility(View.GONE);
