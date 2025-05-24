@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,6 +39,7 @@ import java.util.Map;
 public class SettingActivity extends AppCompatActivity {
     MaterialButton btnDeleteAccount, btnClearHistory, btnRecoveryData;
     String email, password;
+    ProgressBar progressBar;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,6 +55,7 @@ public class SettingActivity extends AppCompatActivity {
         btnClearHistory = findViewById(R.id.button_delete_history);
         btnDeleteAccount = findViewById(R.id.button_delete_account);
         btnRecoveryData = findViewById(R.id.button_recovery_data);
+        progressBar=findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
@@ -73,6 +77,8 @@ public class SettingActivity extends AppCompatActivity {
                             Button btnConfirm = dialog1.findViewById(R.id.btn_confirm);
 
                             btnConfirm.setOnClickListener(view -> {
+                                progressBar.setVisibility(View.VISIBLE);
+                                dialog1.dismiss();
                                 String password2 = edtPassword.getText().toString();
                                 if (!password2.equals(password)) {
                                     edtPassword.setError("Password doesn't match.");
@@ -80,10 +86,7 @@ public class SettingActivity extends AppCompatActivity {
                                 }
                                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
 
-                                String url = "http://192.168.226.150:8080/users/delete-history?email=" + email;
-                                if (url == null || url.isEmpty()) {
-                                    return;
-                                }
+                                String url = "http://192.168.105.150:8080/users/delete-history?email=" + email;
 
                                 StringRequest stringRequest = new StringRequest(
                                         Request.Method.DELETE,
@@ -91,8 +94,9 @@ public class SettingActivity extends AppCompatActivity {
                                         new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response) {
-                                                dialog1.dismiss();
-                                                AlertDialog.Builder dialog3=new AlertDialog.Builder(SettingActivity.this);
+                                                progressBar.setVisibility(View.GONE);
+
+                                                AlertDialog.Builder dialog3 = new AlertDialog.Builder(SettingActivity.this);
                                                 dialog3.setMessage("Re login the app for update.");
                                                 dialog3.show();
                                                 Toast.makeText(SettingActivity.this, "History deleted: " + response, Toast.LENGTH_SHORT).show();
@@ -101,7 +105,7 @@ public class SettingActivity extends AppCompatActivity {
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                dialog1.dismiss();
+                                                progressBar.setVisibility(View.GONE);
                                                 Toast.makeText(SettingActivity.this, "Already done.", Toast.LENGTH_SHORT).show();
                                             }
                                         }
@@ -128,6 +132,8 @@ public class SettingActivity extends AppCompatActivity {
             EditText edtPassword = dialog.findViewById(R.id.edit_email_input);
             Button btnConfirm = dialog.findViewById(R.id.btn_confirm);
             btnConfirm.setOnClickListener(view -> {
+                progressBar.setVisibility(View.VISIBLE);
+                dialog.dismiss();
                 String password2 = edtPassword.getText().toString();
                 if (!password2.equals(password)) {
                     edtPassword.setError("Password doesn't match.");
@@ -135,11 +141,12 @@ public class SettingActivity extends AppCompatActivity {
                 }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
-                String url = "http://192.168.226.150:8080/users/recover-data?email=" + email;
+                String url = "http://192.168.105.150:8080/users/recover-data?email=" + email;
 
                 StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(SettingActivity.this, "Done", Toast.LENGTH_SHORT).show();
                         AlertDialog.Builder dialog = new AlertDialog.Builder(SettingActivity.this);
                         dialog.setMessage("Re login the app for update.");
@@ -148,6 +155,7 @@ public class SettingActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(SettingActivity.this, "Already Done. ", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -166,7 +174,7 @@ public class SettingActivity extends AppCompatActivity {
             Button btnConfirm = dialog.findViewById(R.id.btn_confirm);
             btnConfirm.setOnClickListener(view -> {
                 String password2 = edtPassword.getText().toString();
-
+                progressBar.setVisibility(View.VISIBLE);
 
                 if (!password2.equals(password)) {
                     edtPassword.setError("Password doesn't match.");
@@ -174,17 +182,20 @@ public class SettingActivity extends AppCompatActivity {
                 }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
-                String url = "http://192.168.226.150:8080/users/delete-user?email=" + email + "&password=" + password2;
-
+                String url = "http://192.168.105.150:8080/users/delete-user?email=" + email + "&password=" + password2;
+                Log.d("null email",url);
                 StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                         response -> {
+                            progressBar.setVisibility(View.GONE);
                             Intent intent2 = new Intent(SettingActivity.this, SignUpActivity.class);
                             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent2);
                             finish();
                         },
-                        error -> Toast.makeText(SettingActivity.this, "Check Again", Toast.LENGTH_SHORT).show()
-                );
+                        error -> {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(SettingActivity.this, "Clear History First", Toast.LENGTH_SHORT).show();
+                        });
 
                 requestQueue.add(stringRequest);
                 dialog.dismiss();

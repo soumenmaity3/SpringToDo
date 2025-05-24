@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -42,10 +43,11 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     ToDoAdapter adapter;
     FloatingActionButton floatAction, floatingMenu;
-    String email, password;
+    String email, password,userName;
     private long backPressedTime;
     private Toast backToast;
     ArrayList<ToDoModel> todoList;
+    CardView cardAi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +73,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         floatAction = findViewById(R.id.floatingButtonForAddTask);
         floatingMenu = findViewById(R.id.floatingMenu);
+        cardAi=findViewById(R.id.card);
         todoList = (ArrayList<ToDoModel>) getIntent().getSerializableExtra("todoList");
 
+        cardAi.setOnClickListener(v->{
+            Intent intent=new Intent(MainActivity.this, AiAssistant.class);
+            startActivity(intent);
+        });
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
         password = intent.getStringExtra("password");
+        userName=intent.getStringExtra("userName");
         floatAction.setOnClickListener(v -> {
             Dialog dialog = new Dialog(MainActivity.this);
             dialog.setContentView(R.layout.add_task_lay);
@@ -126,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 txtProfile.setOnClickListener(v -> {
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra("email", email);
+                    intent.putExtra("userName",userName);
+                    Log.d("MainUserName", userName);
                     startActivity(intent);
                     dialog3.dismiss();
                     floatingMenu.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.menu));
@@ -147,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new ToDoAdapter(todoList, this);
+        adapter = new ToDoAdapter(todoList, this,email);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -156,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addTask(String email, String title, String description) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        String url = "http://192.168.226.150:8080/users/add_task";
+        String url = "http://192.168.105.150:8080/users/add_task";
 
         JSONObject userObject = new JSONObject();
         try {

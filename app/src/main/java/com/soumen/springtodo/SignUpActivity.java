@@ -1,6 +1,7 @@
 package com.soumen.springtodo;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -73,43 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (!passwordChecker() || !nameChecker() || !emailChecker()) {
             return;
         }
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.226.150:8080/users/signup";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                edtName.setText(null);
-                edtConfirm.setText(null);
-                edtEmail.setText(null);
-                edtPassword.setText(null);
-                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                startActivity(intent);
-                finish();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse != null && error.networkResponse.statusCode == 409) {
-                    Toast.makeText(SignUpActivity.this, "Email already have an account", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
-                }
-                error.printStackTrace();}
-        }) {
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("user_name", edtName.getText().toString());
-                params.put("email", edtEmail.getText().toString());
-                params.put("password", edtPassword.getText().toString());
-                return params;
-            }
-        };
-        requestQueue.add(request);
+        checkServer(SignUpActivity.this);
 
     }
 
@@ -147,5 +112,55 @@ public class SignUpActivity extends AppCompatActivity {
             return true;  // Validation successful
         }
 
+    }
+
+    public void checkServer(Context context){
+        IsServerOnOrOff isServerOnOrOff=new IsServerOnOrOff(context);
+        isServerOnOrOff.checkServerStatus("http://192.168.105.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+            @Override
+            public void onOnline() {
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                String url = "http://192.168.105.150:8080/users/signup";
+
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        edtName.setText(null);
+                        edtConfirm.setText(null);
+                        edtEmail.setText(null);
+                        edtPassword.setText(null);
+                        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.networkResponse != null && error.networkResponse.statusCode == 409) {
+                            Toast.makeText(SignUpActivity.this, "Email already have an account", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                        }
+                        error.printStackTrace();}
+                }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("user_name", edtName.getText().toString());
+                        params.put("email", edtEmail.getText().toString());
+                        params.put("password", edtPassword.getText().toString());
+                        return params;
+                    }
+                };
+                requestQueue.add(request);
+            }
+
+            @Override
+            public void onOffline() {
+                Toast.makeText(context, "Server offline", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -49,6 +49,9 @@ public class ProfileActivity extends AppCompatActivity {
         txtName=findViewById(R.id.text_username);
         Intent intent1=getIntent();
         email = intent1.getStringExtra("email");
+        String userName=intent1.getStringExtra("userName");
+        Log.d("ProfileUserName", userName);
+        txtName.setText(userName);
         txtEmail.setText(email);
         logoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);

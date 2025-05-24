@@ -1,10 +1,12 @@
 package com.soumen.springtodo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +32,13 @@ import java.util.ArrayList;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
     ArrayList<ToDoModel> arrayList=new ArrayList<>();
     Context context;
+    String email;
     boolean complete=false;
 
-    public ToDoAdapter(ArrayList<ToDoModel> arrayList, Context context) {
+    public ToDoAdapter(ArrayList<ToDoModel> arrayList, Context context,String email) {
         this.arrayList = arrayList;
         this.context = context;
+        this.email=email;
     }
 
     @NonNull
@@ -45,7 +49,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ToDoAdapter.viewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ToDoAdapter.viewHolder holder, @SuppressLint("RecyclerView") int position) {
         ToDoModel model=arrayList.get(position);
         holder.txtTask.setText(model.getTask());
         holder.txtTitle.setText(model.getTitle());
@@ -95,7 +99,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
                 btnEdt.setOnClickListener(s->{
                     edtDialog.dismiss();
                     RequestQueue requestQueue = Volley.newRequestQueue(context);
-                    String url="http://192.168.226.150:8080/users/updateTask/"+model.getId();
+                    String url="http://192.168.105.150:8080/users/updateTask/"+model.getId();
                     String tittle=edtTask.getText().toString();
                     String description=edtDescription.getText().toString();
                     JSONObject jsonObject=new JSONObject();
@@ -133,7 +137,29 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
                     };
                     requestQueue.add(stringRequest);
                 });
+
                 edtDialog.show();
+            });
+
+            deleteTask.setOnClickListener(click->{
+                int id= model.getId();
+                RequestQueue requestQueue=Volley.newRequestQueue(context);
+                String url="http://192.168.105.150:8080/users/delete_task/"+id+"?email="+ email;
+                StringRequest stringRequest=new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                        optionsDialog.dismiss();
+                        arrayList.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,"Error",Toast.LENGTH_SHORT);
+                    }
+                });
+                requestQueue.add(stringRequest);
             });
 
             return true;
@@ -175,7 +201,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
     }
 
     private void updateCompleteStatus(int todoId) {
-        String url = "http://192.168.226.150:8080/users/updateComplete/" + todoId;
+        String url = "http://192.168.105.150:8080/users/updateComplete/" + todoId;
 
         StringRequest request = new StringRequest(Request.Method.PUT, url,
                 response -> {

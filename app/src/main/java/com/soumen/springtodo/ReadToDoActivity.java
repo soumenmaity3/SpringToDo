@@ -64,9 +64,6 @@ public class ReadToDoActivity extends AppCompatActivity {
         dimOverlay = findViewById(R.id.dimOverlay); // Add this in XML too
          rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
          rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
-        LinearLayout fabEditLayout = findViewById(R.id.fabEditLayout);
-        LinearLayout fabAboutLayout = findViewById(R.id.fabAboutLayout);
-
 
         fabOpenAnim = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fabCloseAnim = AnimationUtils.loadAnimation(this, R.anim.fab_close);
@@ -74,8 +71,10 @@ public class ReadToDoActivity extends AppCompatActivity {
         fabMain.setOnClickListener(v -> toggleMenu());
         fabClose.setOnClickListener(v -> toggleMenu());
 
-        fabAbout.setOnClickListener(v ->
-                Toast.makeText(this, "About clicked", Toast.LENGTH_SHORT).show());
+        fabAbout.setOnClickListener(v->{
+            toggleMenu();
+            Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
+        });
 
         Intent intent = getIntent();
         String task = intent.getStringExtra("task");
@@ -85,6 +84,7 @@ public class ReadToDoActivity extends AppCompatActivity {
         txtTittle.setText(tittle);
 
         fabEdit.setOnClickListener(v -> {
+            toggleMenu();
             Dialog dialog = new Dialog(ReadToDoActivity.this);
             dialog.setContentView(R.layout.add_task_lay);
             EditText edtTittle = dialog.findViewById(R.id.edtTask);
@@ -109,7 +109,7 @@ public class ReadToDoActivity extends AppCompatActivity {
                 String editTask = edtTask.getText().toString();
                 String editTittle = edtTittle.getText().toString();
                 RequestQueue requestQueue = Volley.newRequestQueue(ReadToDoActivity.this);
-                String url = "http://192.168.226.150:8080/users/updateTask/" + taskId;
+                String url = "http://192.168.105.150:8080/users/updateTask/" + taskId;
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("tittle", editTittle);

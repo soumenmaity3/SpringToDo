@@ -15,13 +15,6 @@ public class ToDoModel implements Serializable {
         this.complete = complete;
     }
 
-//    public ToDoModel(String title, String task, String email, boolean complete) {
-//        this.title = title;
-//        this.task = task;
-//        this.email = email;
-//        this.complete = complete;
-//    }
-
     public boolean isComplete() {return complete;}
     public void setComplete(boolean complete) {this.complete = complete;}
 

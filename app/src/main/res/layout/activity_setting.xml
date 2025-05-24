@@ -7,46 +7,64 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     tools:context=".SettingActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="100dp"/>
+
+    <!-- Clear History Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_delete_history"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="Clear History"
         android:textAllCaps="false"
-        android:layout_marginBottom="16dp"
-        app:cornerRadius="16dp"
         android:textColor="@android:color/white"
-        app:backgroundTint="@color/colorAccent" />
+        app:backgroundTint="@color/colorAccent"
+        app:cornerRadius="16dp" />
 
+    <!-- Recover Data Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_recovery_data"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recover You Data"
-        android:textAllCaps="false"
         android:layout_marginBottom="16dp"
-        app:cornerRadius="16dp"
+        android:text="Recover Your Data"
+        android:textAllCaps="false"
         android:textColor="@android:color/white"
-        app:backgroundTint="@android:color/holo_green_dark" />
+        app:backgroundTint="@android:color/holo_green_dark"
+        app:cornerRadius="16dp" />
 
-
+    <!-- Delete Account Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_delete_account"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="Delete Account"
         android:textAllCaps="false"
-        android:layout_marginBottom="16dp"
-        app:cornerRadius="16dp"
         android:textColor="@android:color/white"
-        app:backgroundTint="@android:color/holo_red_dark" />
+        app:backgroundTint="@android:color/holo_red_dark"
+        app:cornerRadius="16dp" />
 
-
+    <!-- Progress Bar (Initially hidden) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
 </LinearLayout>

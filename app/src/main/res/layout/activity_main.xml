@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_margin="15dp"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
     <!-- Marquee Text -->
@@ -17,38 +17,78 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:marqueeRepeatLimit="marquee_forever"
-        android:padding="12dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="To edit a task, long-press on it! Stay focused. Stay productive. 💪"
         android:textColor="#F80707"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:padding="12dp" />
 
+    <!-- Assistant Card (Material style mimic) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/marqueeText"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp">
 
-    <!-- RecyclerView below the marquee -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <!-- Icon -->
+            <ImageView
+                android:id="@+id/assistant_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_assistant"
+                android:contentDescription="Assistant Icon" />
+
+            <!-- Text -->
+            <TextView
+                android:id="@+id/assistant_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Talk with AI Assistant"
+                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/marqueeText"
-        android:layout_marginTop="8dp" />
-
-    <!-- Floating Action Button -->
+        android:layout_above="@id/floatingButtonForAddTask"
+        android:layout_below="@id/card"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="-92dp" />
+    <!-- Floating Add Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingButtonForAddTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
         android:src="@drawable/baseline_add_24" />
 
+    <!-- Floating Menu Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_margin="20dp"
         android:src="@drawable/menu" />
 </RelativeLayout>

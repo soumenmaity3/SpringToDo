@@ -1,9 +1,9 @@
 package com.soumen.springtodo;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,9 +33,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignInActivity extends AppCompatActivity {
-Button btnSubmit2;
-TextView txtSignUp,forgotPassword;
-EditText edtSEmail,edtSPassword;
+    Button btnSubmit2;
+    TextView txtSignUp, forgotPassword;
+    EditText edtSEmail, edtSPassword;
+    private long backPressedTime;
+    private Toast backToast;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,25 +51,25 @@ EditText edtSEmail,edtSPassword;
             return insets;
         });
 
-        edtSEmail=findViewById(R.id.edtSName);
-        edtSPassword=findViewById(R.id.edtSPassword);
-        btnSubmit2=findViewById(R.id.btnSubmit2);
-        txtSignUp=findViewById(R.id.signUp);
+        edtSEmail = findViewById(R.id.edtSName);
+        edtSPassword = findViewById(R.id.edtSPassword);
+        btnSubmit2 = findViewById(R.id.btnSubmit2);
+        txtSignUp = findViewById(R.id.signUp);
 
-        btnSubmit2.setOnClickListener(v->{
+        btnSubmit2.setOnClickListener(v -> {
             isAvailable();
         });
 
-        forgotPassword=findViewById(R.id.txtForgotPassword);
+        forgotPassword = findViewById(R.id.txtForgotPassword);
 
-        forgotPassword.setOnClickListener(v->{
-            Intent intent=new Intent(SignInActivity.this, ForgotPasswordActivity.class);
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
             finish();
         });
 
-        txtSignUp.setOnClickListener(v->{
-            Intent intent=new Intent(SignInActivity.this, SignUpActivity.class);
+        txtSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
             startActivity(intent);
             finish();
         });
@@ -74,96 +77,9 @@ EditText edtSEmail,edtSPassword;
 
     public void isAvailable() {
         if (!emailChecker() || !passwordChecker()) return;
-
-        RequestQueue requestQueue = Volley.newRequestQueue(SignInActivity.this);
-        String url = "http://192.168.226.150:8080/users/login";
-
-        String userEmail=edtSEmail.getText().toString();
-        String password=edtSPassword.getText().toString();
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("email",userEmail);
-            jsonBody.put("password", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.POST,
-                url,
-                jsonBody.names(),
-                response -> {
-                     // Pass this dynamically
-                    String url2 = "http://192.168.226.150:8080/users/user-name?email=" + userEmail;
-                    Log.d("useremail", userEmail);
-                    RequestQueue queue = Volley.newRequestQueue(this);
-
-                    StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(SignInActivity.this, "Find It- "+userEmail, Toast.LENGTH_SHORT).show();
-                            Log.d("userName", response);
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(SignInActivity.this, "Error"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                            queue.add(stringRequest2);
-
-                    try {
-                        ArrayList<ToDoModel>todolist=new ArrayList<>();
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject todo = response.getJSONObject(i);
-                            String description;
-                            String title;
-                            int id;
-                            boolean complete=todo.getBoolean("completed");
-                            if (complete) {
-                                continue;
-                            } else {
-                                 id=todo.getInt("id");
-                                title = todo.getString("tittle");
-                                description = todo.getString("description");
-                            }
-
-                            ToDoModel list = new ToDoModel(title, description, false);
-                            todolist.add(list);
-                            list.setId(id);
-
-
-                        }
-                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                        Log.d("SignInActivity", "todoList size: " + todolist.size());
-                        intent.putExtra("todoList", todolist);
-                        intent.putExtra("email", userEmail);
-                        intent.putExtra("password",password);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(SignInActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(SignInActivity.this, "JSON Parsing Error", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                error -> {
-                    Toast.makeText(SignInActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
-                }
-        ) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() {
-                return jsonBody.toString().getBytes();
-            }
-        };
-
-        requestQueue = Volley.newRequestQueue(SignInActivity.this);
-        requestQueue.add(jsonArrayRequest);
+        String userEmail = edtSEmail.getText().toString();
+        String password = edtSPassword.getText().toString();
+        checkServer(SignInActivity.this, userEmail, password);
 
     }
 
@@ -187,5 +103,132 @@ EditText edtSEmail,edtSPassword;
             return true;  // Validation successful
         }
 
+    }
+
+    public void checkServer(Context context, String userEmail, String password) {
+        IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(context);
+        isServerOnOrOff.checkServerStatus("http://192.168.105.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+            @Override
+            public void onOnline() {
+                RequestQueue requestQueue = Volley.newRequestQueue(SignInActivity.this);
+                String url = "http://192.168.105.150:8080/users/login";
+
+                JSONObject jsonBody = new JSONObject();
+                try {
+                    jsonBody.put("email", userEmail);
+                    jsonBody.put("password", password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                        Request.Method.POST,
+                        url,
+                        jsonBody.names(),
+                        response -> {
+
+                            try {
+                                ArrayList<ToDoModel> todolist = new ArrayList<>();
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject todo = response.getJSONObject(i);
+                                    String description;
+                                    String title;
+                                    int id;
+                                    boolean complete = todo.getBoolean("completed");
+                                    if (complete) {
+                                        continue;
+                                    } else {
+                                        id = todo.getInt("id");
+                                        title = todo.getString("tittle");
+                                        description = todo.getString("description");
+                                    }
+
+                                    ToDoModel list = new ToDoModel(title, description, false);
+                                    todolist.add(list);
+                                    list.setId(id);
+                                }
+                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                intent.putExtra("todoList", todolist);
+                                intent.putExtra("email", userEmail);
+                                intent.putExtra("password", password);
+
+                                userName(userEmail, new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess(String result) {
+
+                                        intent.putExtra("userName", result);
+                                        Toast.makeText(context, "User Name" + (result), Toast.LENGTH_SHORT).show();
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onError(String error) {
+                                        Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                Toast.makeText(SignInActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(SignInActivity.this, "JSON Parsing Error", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        error -> {
+                            Toast.makeText(SignInActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                        }
+                ) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() {
+                        return jsonBody.toString().getBytes();
+                    }
+                };
+
+                requestQueue = Volley.newRequestQueue(SignInActivity.this);
+                requestQueue.add(jsonArrayRequest);
+
+            }
+
+            @Override
+            public void onOffline() {
+                Toast.makeText(context, "Server Offline", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public void userName(String email, VolleyCallback callback) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://192.168.105.150:8080/users/user-name?email=" + email;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                callback.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onError(error.toString());
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            if (backToast != null) backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }

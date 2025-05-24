@@ -20,8 +20,11 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ResetPassword extends AppCompatActivity {
-    TextInputEditText newPasswordEditText,confirmPasswordEditText;
+    TextInputEditText newPasswordEditText, confirmPasswordEditText;
     MaterialButton resetPasswordButton;
+    private long backPressedTime;
+    private Toast backToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,25 +35,25 @@ public class ResetPassword extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        newPasswordEditText=findViewById(R.id.newPasswordEditText);
-        confirmPasswordEditText=findViewById(R.id.confirmPasswordEditText);
-        resetPasswordButton=findViewById(R.id.resetPasswordButton);
+        newPasswordEditText = findViewById(R.id.newPasswordEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+        resetPasswordButton = findViewById(R.id.resetPasswordButton);
 
-        Intent intent=getIntent();
-        String email=intent.getStringExtra("email");
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
 
-        resetPasswordButton.setOnClickListener(v->{
+        resetPasswordButton.setOnClickListener(v -> {
             if (!passwordChecker()) {
                 return;
             }
-            RequestQueue requestQueue= Volley.newRequestQueue(ResetPassword.this);
-            String password=newPasswordEditText.getText().toString();
-            String url="http://192.168.226.150:8080/users/reset-password?email="+email+"&password="+password;
+            RequestQueue requestQueue = Volley.newRequestQueue(ResetPassword.this);
+            String password = newPasswordEditText.getText().toString();
+            String url = "http://192.168.105.150:8080/users/reset-password?email=" + email + "&password=" + password;
 
-            StringRequest stringRequest=new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Intent intent1=new Intent(ResetPassword.this,SignInActivity.class);
+                    Intent intent1 = new Intent(ResetPassword.this, SignInActivity.class);
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent1);
                     finish();
@@ -82,5 +85,18 @@ public class ResetPassword extends AppCompatActivity {
             return true;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            if (backToast != null) backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }

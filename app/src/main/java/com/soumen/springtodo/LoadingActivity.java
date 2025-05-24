@@ -40,8 +40,24 @@ public class LoadingActivity extends AppCompatActivity {
         serverError = findViewById(R.id.serverError);
         txtSever = findViewById(R.id.txtSever);
         sendRequest = findViewById(R.id.sendRequest);
+        IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(LoadingActivity.this);
+        new Handler().postDelayed(() -> isServerOnOrOff.checkServerStatus("http://192.168.105.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+            @Override
+            public void onOnline() {
+                Intent intent = new Intent(LoadingActivity.this, OptionPage.class);
+                startActivity(intent);
+                finish();
+            }
 
-        new Handler().postDelayed(() -> checkServerStatus("http://192.168.226.150:8080/users/ping"), 1000);
+            @Override
+            public void onOffline() {
+                serverError.setVisibility(View.VISIBLE);
+                txtSever.setVisibility(View.VISIBLE);
+                sendRequest.setVisibility(View.VISIBLE);
+                Toast.makeText(LoadingActivity.this, "Server is offline", Toast.LENGTH_LONG).show();
+                pgBar.setVisibility(ProgressBar.INVISIBLE);
+            }
+        }), 1000);
 
         sendRequest.setOnClickListener(v -> {
             String email = "sm8939912@gmail.com";
@@ -57,34 +73,5 @@ public class LoadingActivity extends AppCompatActivity {
         });
     }
 
-    private void checkServerStatus(String urlString) {
-        new Thread(() -> {
-            boolean isOnline = false;
-            try {
-                URL url = new URL(urlString);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(3000); // 3 seconds timeout
-                conn.connect();
-                int code = conn.getResponseCode();
-                isOnline = (code == 200); // HTTP OK
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            boolean finalIsOnline = isOnline;
-            runOnUiThread(() -> {
-                if (finalIsOnline) {
-                    Intent intent = new Intent(LoadingActivity.this, OptionPage.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    serverError.setVisibility(View.VISIBLE);
-                    txtSever.setVisibility(View.VISIBLE);
-                    sendRequest.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoadingActivity.this, "Server is offline", Toast.LENGTH_LONG).show();
-                    pgBar.setVisibility(ProgressBar.INVISIBLE);
-                }
-            });
-        }).start();
-    }
 }
