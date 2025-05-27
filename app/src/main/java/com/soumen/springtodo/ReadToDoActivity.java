@@ -2,7 +2,10 @@ package com.soumen.springtodo;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.widget.*;
 
 import androidx.activity.EdgeToEdge;
@@ -33,12 +36,14 @@ public class ReadToDoActivity extends AppCompatActivity {
     TextView txtTask, txtTittle;
     FloatingActionButton fabEdit;
     View dimOverlay;
-    Animation rotateForward,rotateBackward,fabOpenAnim, fabCloseAnim;;
+    Animation rotateForward, rotateBackward, fabOpenAnim, fabCloseAnim;
+    ;
 
     // NEW FAB MENU
     FloatingActionButton fabMain, fabAbout, fabClose;
     private LinearLayout fabAboutLayout, fabEditLayout, fabCloseLayout;
     private boolean isMenuOpen = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,19 +67,27 @@ public class ReadToDoActivity extends AppCompatActivity {
         fabEditLayout = findViewById(R.id.fabEditLayout);
         fabCloseLayout = findViewById(R.id.fabCloseLayout);
 
-        txtTask.setOnClickListener(v->{
-            if (isValidLink(txtTask.getText().toString())){
-                Intent intent=new Intent(ReadToDoActivity.this, BrowserActivity.class);
-                intent.putExtra("DATA",txtTask.getText().toString());
+        txtTask.setOnClickListener(v -> {
+            if (isValidLink(txtTask.getText().toString())) {
+                Intent intent = new Intent(ReadToDoActivity.this, BrowserActivity.class);
+                intent.putExtra("DATA", txtTask.getText().toString());
                 startActivity(intent);
-            }else {
-                Toast.makeText(this, "This is not a Valid Link.", Toast.LENGTH_SHORT).show();
+            } else if (isValidMobile(txtTask.getText().toString())) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + txtTask.getText().toString()));
+                startActivity(intent);
+            } else if (isValidEmail(txtTask.getText().toString())) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:" + txtTask.getText().toString())); // Recipient
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here"); // Optional
+                intent.putExtra(Intent.EXTRA_TEXT, "Hello, this is a message body."); // Optional
+                startActivity(intent);
             }
         });
 
         dimOverlay = findViewById(R.id.dimOverlay); // Add this in XML too
-         rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
-         rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
+        rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
 
         fabOpenAnim = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fabCloseAnim = AnimationUtils.loadAnimation(this, R.anim.fab_close);
@@ -82,7 +95,7 @@ public class ReadToDoActivity extends AppCompatActivity {
         fabMain.setOnClickListener(v -> toggleMenu());
         fabClose.setOnClickListener(v -> toggleMenu());
 
-        fabAbout.setOnClickListener(v->{
+        fabAbout.setOnClickListener(v -> {
             toggleMenu();
             Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
         });
@@ -104,7 +117,7 @@ public class ReadToDoActivity extends AppCompatActivity {
             CheckBox checkBoxTimer = dialog.findViewById(R.id.checkBoxTimer);
             EditText editTextHr = dialog.findViewById(R.id.editTextHr);
             EditText editTextMin = dialog.findViewById(R.id.editTextMin);
-            TextView textView=dialog.findViewById(R.id.textView);
+            TextView textView = dialog.findViewById(R.id.textView);
             textView.setText("Edit Task");
 
             checkBoxTimer.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -198,14 +211,25 @@ public class ReadToDoActivity extends AppCompatActivity {
                 .start();
     }
 
-
-        public static boolean isValidLink(String text) {
-            try {
-                new URL(text).toURI(); // Check for both URL and URI syntax
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
+    public static boolean isValidLink(String text) {
+        try {
+            new URL(text).toURI(); // Check for both URL and URI syntax
+            return true;
+        } catch (Exception e) {
+            return false;
         }
+    }
 
+    public static boolean isValidMobile(String text) {
+        return text.matches("^[6-9]\\d{9}$");
+    }
+
+    public static boolean isValidEmail(String email) {
+        if (email == null) return false;
+
+        // Basic regex for email validation
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+        return email.matches(emailRegex);
+    }
 }

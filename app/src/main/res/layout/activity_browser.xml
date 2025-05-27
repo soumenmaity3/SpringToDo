@@ -18,9 +18,9 @@
         android:textStyle="bold"
         android:textSize="30dp"/>
 </androidx.appcompat.widget.Toolbar>
-    <WebView
+    <android.webkit.WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolBar"/>
+        android:layout_below="@id/toolBar" />
 </RelativeLayout>

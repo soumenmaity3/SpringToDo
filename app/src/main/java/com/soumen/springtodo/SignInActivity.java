@@ -65,7 +65,6 @@ public class SignInActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
-            finish();
         });
 
         txtSignUp.setOnClickListener(v -> {

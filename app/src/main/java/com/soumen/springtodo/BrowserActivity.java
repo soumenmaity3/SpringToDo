@@ -23,7 +23,7 @@ public class BrowserActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        WebView webView=findViewById(R.id.webView);
+        android.webkit.WebView webView=findViewById(R.id.webView);
         Intent getData=getIntent();
        String data=getData.getStringExtra("DATA");
         WebSettings webSettings = webView.getSettings();
