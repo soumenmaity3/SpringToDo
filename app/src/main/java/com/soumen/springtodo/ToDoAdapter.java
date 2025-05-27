@@ -99,7 +99,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
                 btnEdt.setOnClickListener(s->{
                     edtDialog.dismiss();
                     RequestQueue requestQueue = Volley.newRequestQueue(context);
-                    String url="http://192.168.105.150:8080/users/updateTask/"+model.getId();
+                    String url="http://192.168.142.150:8080/users/updateTask/"+model.getId();
                     String tittle=edtTask.getText().toString();
                     String description=edtDescription.getText().toString();
                     JSONObject jsonObject=new JSONObject();
@@ -144,7 +144,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
             deleteTask.setOnClickListener(click->{
                 int id= model.getId();
                 RequestQueue requestQueue=Volley.newRequestQueue(context);
-                String url="http://192.168.105.150:8080/users/delete_task/"+id+"?email="+ email;
+                String url="http://192.168.142.150:8080/users/delete_task/"+id+"?email="+ email;
                 StringRequest stringRequest=new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -201,7 +201,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
     }
 
     private void updateCompleteStatus(int todoId) {
-        String url = "http://192.168.105.150:8080/users/updateComplete/" + todoId;
+        String url = "http://192.168.142.150:8080/users/updateComplete/" + todoId;
 
         StringRequest request = new StringRequest(Request.Method.PUT, url,
                 response -> {

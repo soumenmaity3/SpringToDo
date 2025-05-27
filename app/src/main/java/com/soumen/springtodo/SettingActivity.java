@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingActivity extends AppCompatActivity {
-    MaterialButton btnDeleteAccount, btnClearHistory, btnRecoveryData;
+    MaterialButton btnDeleteAccount, btnClearHistory, btnRecoveryData , btnDeleteTask;
     String email, password;
     ProgressBar progressBar;
 
@@ -56,6 +56,7 @@ public class SettingActivity extends AppCompatActivity {
         btnDeleteAccount = findViewById(R.id.button_delete_account);
         btnRecoveryData = findViewById(R.id.button_recovery_data);
         progressBar=findViewById(R.id.progressBar);
+        btnDeleteTask=findViewById(R.id.button_delete_task_history);
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
@@ -86,7 +87,7 @@ public class SettingActivity extends AppCompatActivity {
                                 }
                                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
 
-                                String url = "http://192.168.105.150:8080/users/delete-history?email=" + email;
+                                String url = "http://192.168.142.150:8080/users/delete-history?email=" + email;
 
                                 StringRequest stringRequest = new StringRequest(
                                         Request.Method.DELETE,
@@ -96,9 +97,6 @@ public class SettingActivity extends AppCompatActivity {
                                             public void onResponse(String response) {
                                                 progressBar.setVisibility(View.GONE);
 
-                                                AlertDialog.Builder dialog3 = new AlertDialog.Builder(SettingActivity.this);
-                                                dialog3.setMessage("Re login the app for update.");
-                                                dialog3.show();
                                                 Toast.makeText(SettingActivity.this, "History deleted: " + response, Toast.LENGTH_SHORT).show();
                                             }
                                         },
@@ -126,6 +124,24 @@ public class SettingActivity extends AppCompatActivity {
             dialog.show();
         });
 
+        btnDeleteTask.setOnClickListener(v->{
+            Dialog dialog=new Dialog(this);
+            dialog.setContentView(R.layout.enter_repassword);
+            EditText editText=dialog.findViewById(R.id.edit_email_input);
+            Button btnConfirm = dialog.findViewById(R.id.btn_confirm);
+            btnConfirm.setOnClickListener(view -> {
+            if (editText.getText().toString().equals(password)) {
+                Intent intent1=new Intent(SettingActivity.this,LostHistoryActivity.class);
+                intent1.putExtra("email",email);
+                startActivity(intent1);
+                dialog.dismiss();
+            }else {
+                Toast.makeText(this, "Check Your Password", Toast.LENGTH_SHORT).show();
+            }
+            });
+            dialog.show();
+        });
+
         btnRecoveryData.setOnClickListener(v -> {
             Dialog dialog = new Dialog(SettingActivity.this);
             dialog.setContentView(R.layout.enter_repassword);
@@ -141,7 +157,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
-                String url = "http://192.168.105.150:8080/users/recover-data?email=" + email;
+                String url = "http://192.168.142.150:8080/users/recover-data?email=" + email;
 
                 StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                     @Override
@@ -182,7 +198,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
-                String url = "http://192.168.105.150:8080/users/delete-user?email=" + email + "&password=" + password2;
+                String url = "http://192.168.142.150:8080/users/delete-user?email=" + email + "&password=" + password2;
                 Log.d("null email",url);
                 StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                         response -> {

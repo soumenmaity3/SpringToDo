@@ -35,7 +35,7 @@
             android:id="@+id/edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Your Name"
+            android:hint="Enter User Name"
             android:textSize="16sp"
             android:backgroundTint="@color/colorAccent"
             android:padding="16dp"/>

@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addTask(String email, String title, String description) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        String url = "http://192.168.105.150:8080/users/add_task";
+        String url = "http://192.168.142.150:8080/users/add_task";
 
         JSONObject userObject = new JSONObject();
         try {

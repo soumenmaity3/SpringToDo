@@ -41,7 +41,7 @@ public class LoadingActivity extends AppCompatActivity {
         txtSever = findViewById(R.id.txtSever);
         sendRequest = findViewById(R.id.sendRequest);
         IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(LoadingActivity.this);
-        new Handler().postDelayed(() -> isServerOnOrOff.checkServerStatus("http://192.168.105.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+        new Handler().postDelayed(() -> isServerOnOrOff.checkServerStatus("http://192.168.142.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
             @Override
             public void onOnline() {
                 Intent intent = new Intent(LoadingActivity.this, OptionPage.class);

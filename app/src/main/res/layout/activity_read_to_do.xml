@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ReadToDoActivity">
 
-    <!-- Task Content -->
+    <!-- Fixed Title Layout -->
     <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/taskTitle"
@@ -20,6 +21,7 @@
             android:layout_height="wrap_content"
             android:text="Task Title"
             android:textSize="24sp"
+            android:paddingLeft="15dp"
             android:textStyle="bold" />
 
         <View
@@ -28,15 +30,27 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:background="#CCCCCC" />
+    </LinearLayout>
+
+    <!-- ScrollView below the title, containing fullTaskText -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/main"
+        android:layout_above="@id/fabMain"
+        android:fillViewport="true"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/fullTaskText"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="Full Task Details"
             android:textSize="16sp" />
-    </LinearLayout>
+    </ScrollView>
+
+    <!-- Dim Overlay -->
     <View
         android:id="@+id/dimOverlay"
         android:layout_width="match_parent"
@@ -86,7 +100,6 @@
             android:textSize="16sp"
             android:paddingEnd="8dp" />
 
-        <!-- Your original fabEdit preserved -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabEdit"
             android:layout_width="wrap_content"
@@ -114,7 +127,7 @@
             android:contentDescription="Close Menu" />
     </LinearLayout>
 
-    <!-- Main FAB to toggle menu -->
+    <!-- Main FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMain"
         android:layout_width="wrap_content"
@@ -124,4 +137,5 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_arrow_up"
         android:contentDescription="Main Menu" />
+
 </RelativeLayout>

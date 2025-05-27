@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="24dp"
     android:id="@+id/main"
@@ -15,55 +17,76 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Profile"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:textColor="?android:textColorPrimary"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="32dp" />
 
-    <!-- Username -->
-    <TextView
-        android:id="@+id/label_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/text_username"
+    <!-- Card for User Info -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="soumen123"
-        android:textSize="16sp"
-        android:paddingBottom="16dp" />
+        android:layout_marginBottom="32dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp">
 
-    <!-- Email -->
-    <TextView
-        android:id="@+id/label_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/text_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="soumen@example.com"
-        android:textSize="16sp"
-        android:paddingBottom="32dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <!-- Delete History Button -->
+            <!-- Username -->
+            <TextView
+                android:id="@+id/label_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="14sp"
+                android:textColor="?android:textColorSecondary" />
 
+            <TextView
+                android:id="@+id/text_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="soumen123"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:paddingBottom="16dp" />
+
+            <!-- Email -->
+            <TextView
+                android:id="@+id/label_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="14sp"
+                android:textColor="?android:textColorSecondary" />
+
+            <TextView
+                android:id="@+id/text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="soumen@example.com"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"
+                android:paddingBottom="8dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- Logout Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="Logout..."
+        android:textColor="@color/white"
         android:textAllCaps="false"
-        android:backgroundTint="#607D8B"
-        android:textColor="@android:color/white" />
-
-
+        android:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="8dp"
+        app:iconPadding="8dp"
+        app:iconGravity="textStart"
+        app:icon="@drawable/ic_logout" /> <!-- Optional icon -->
 </LinearLayout>

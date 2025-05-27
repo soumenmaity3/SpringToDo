@@ -57,11 +57,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     public void checkServer(Context context, String email) {
         IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(context);
-        isServerOnOrOff.checkServerStatus("http://192.168.105.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+        isServerOnOrOff.checkServerStatus("http://192.168.142.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
             @Override
             public void onOnline() {
                 RequestQueue requestQueue = Volley.newRequestQueue(context);
-                String url = "http://192.168.105.150:8080/users/check-email?email=" + email;
+                String url = "http://192.168.142.150:8080/users/check-email?email=" + email;
                 Log.d("ForgotPassword", email);
 
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

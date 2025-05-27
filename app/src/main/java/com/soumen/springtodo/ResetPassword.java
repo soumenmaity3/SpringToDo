@@ -48,7 +48,7 @@ public class ResetPassword extends AppCompatActivity {
             }
             RequestQueue requestQueue = Volley.newRequestQueue(ResetPassword.this);
             String password = newPasswordEditText.getText().toString();
-            String url = "http://192.168.105.150:8080/users/reset-password?email=" + email + "&password=" + password;
+            String url = "http://192.168.142.150:8080/users/reset-password?email=" + email + "&password=" + password;
 
             StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                 @Override

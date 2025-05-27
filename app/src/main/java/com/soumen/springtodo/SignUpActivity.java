@@ -90,8 +90,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     public boolean emailChecker() {
         String email = edtEmail.getText().toString();
-        if (email.isEmpty()) {
-            edtEmail.setError("Name can't be empty.");
+        if (email.isEmpty()||!isValidEmail(email)) {
+            edtEmail.setError("Enter Valid Email");
             return false;
         } else {
             return true;
@@ -105,22 +105,24 @@ public class SignUpActivity extends AppCompatActivity {
         if (password.isEmpty() || confirm.isEmpty()) {
             edtPassword.setError("Password can't be empty.");
             return false;
-        } else if (!password.equals(confirm)) {  // Use .equals() instead of ==
+        } else if (!password.equals(confirm)) {
             edtConfirm.setError("Passwords do not match!");
             return false;
+        } else if (password.length() != 8) {
+            edtPassword.setError("Password must be 8 character");
+            return false;
         } else {
-            return true;  // Validation successful
+            return true;
         }
-
     }
 
     public void checkServer(Context context){
         IsServerOnOrOff isServerOnOrOff=new IsServerOnOrOff(context);
-        isServerOnOrOff.checkServerStatus("http://192.168.105.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+        isServerOnOrOff.checkServerStatus("http://192.168.142.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
             @Override
             public void onOnline() {
                 RequestQueue requestQueue = Volley.newRequestQueue(context);
-                String url = "http://192.168.105.150:8080/users/signup";
+                String url = "http://192.168.142.150:8080/users/signup";
 
                 StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
@@ -162,5 +164,14 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(context, "Server offline", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public static boolean isValidEmail(String email) {
+        if (email == null) return false;
+
+        // Basic regex for email validation
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+        return email.matches(emailRegex);
     }
 }

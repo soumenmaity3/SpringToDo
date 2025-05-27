@@ -1,70 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center_horizontal"
-    tools:context=".SettingActivity">
+    android:background="?android:colorBackground"
+    android:padding="25dp"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="100dp"/>
-
-    <!-- Clear History Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_delete_history"
-        style="@style/Widget.MaterialComponents.Button"
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Clear History"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="16dp" />
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp"
+        android:gravity="center_horizontal"
+        tools:context=".SettingActivity">
 
-    <!-- Recover Data Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_recovery_data"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Recover Your Data"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@android:color/holo_green_dark"
-        app:cornerRadius="16dp" />
+        <!-- Heading -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold"
+            android:layout_marginBottom="48dp"
+            android:textColor="?android:textColorPrimary" />
 
-    <!-- Delete Account Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_delete_account"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Delete Account"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@android:color/holo_red_dark"
-        app:cornerRadius="16dp" />
+        <!-- Clear History Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_delete_task_history"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="See Completed Task"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="#DB13D2"
+            app:cornerRadius="12dp"
+            app:elevation="4dp"
+            app:iconGravity="textStart"
+            app:icon="@drawable/note"/>
 
-    <!-- Progress Bar (Initially hidden) -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:indeterminate="true"
-        android:visibility="gone" />
+        <!-- Recover Data Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_recovery_data"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Recover Your Data"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@android:color/holo_green_dark"
+            app:cornerRadius="12dp"
+            app:elevation="4dp"
+            app:icon="@drawable/recovery"
+            app:iconGravity="textStart"/>
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_delete_history"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Clear History"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="12dp"
+            app:elevation="4dp"
+            app:iconGravity="textStart"
+            app:icon="@drawable/history"/>
+
+
+        <!-- Delete Account Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_delete_account"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Delete Account"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@android:color/holo_red_dark"
+            app:cornerRadius="12dp"
+            app:elevation="4dp"
+            app:iconGravity="textStart"
+            app:icon="@drawable/delete_user"/>
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

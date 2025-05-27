@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.net.URL;
+
 public class ReadToDoActivity extends AppCompatActivity {
 
     TextView txtTask, txtTittle;
@@ -53,13 +55,22 @@ public class ReadToDoActivity extends AppCompatActivity {
         txtTask = findViewById(R.id.fullTaskText);
         fabEdit = findViewById(R.id.fabEdit);
 
-        // NEW FAB INITIALIZATION
         fabMain = findViewById(R.id.fabMain);
         fabAbout = findViewById(R.id.fabAbout);
         fabClose = findViewById(R.id.fabClose);
         fabAboutLayout = findViewById(R.id.fabAboutLayout);
         fabEditLayout = findViewById(R.id.fabEditLayout);
         fabCloseLayout = findViewById(R.id.fabCloseLayout);
+
+        txtTask.setOnClickListener(v->{
+            if (isValidLink(txtTask.getText().toString())){
+                Intent intent=new Intent(ReadToDoActivity.this, BrowserActivity.class);
+                intent.putExtra("DATA",txtTask.getText().toString());
+                startActivity(intent);
+            }else {
+                Toast.makeText(this, "This is not a Valid Link.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         dimOverlay = findViewById(R.id.dimOverlay); // Add this in XML too
          rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
@@ -109,7 +120,7 @@ public class ReadToDoActivity extends AppCompatActivity {
                 String editTask = edtTask.getText().toString();
                 String editTittle = edtTittle.getText().toString();
                 RequestQueue requestQueue = Volley.newRequestQueue(ReadToDoActivity.this);
-                String url = "http://192.168.105.150:8080/users/updateTask/" + taskId;
+                String url = "http://192.168.142.150:8080/users/updateTask/" + taskId;
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("tittle", editTittle);
@@ -186,4 +197,15 @@ public class ReadToDoActivity extends AppCompatActivity {
                 .withEndAction(() -> view.setVisibility(View.GONE))
                 .start();
     }
+
+
+        public static boolean isValidLink(String text) {
+            try {
+                new URL(text).toURI(); // Check for both URL and URI syntax
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
 }
