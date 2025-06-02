@@ -28,11 +28,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +45,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     ToDoAdapter adapter;
     FloatingActionButton floatAction, floatingMenu;
-    String email, password,userName;
+    String email, password, userName;
     private long backPressedTime;
     private Toast backToast;
     ArrayList<ToDoModel> todoList;
@@ -73,18 +75,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         floatAction = findViewById(R.id.floatingButtonForAddTask);
         floatingMenu = findViewById(R.id.floatingMenu);
-        cardAi=findViewById(R.id.card);
+        cardAi = findViewById(R.id.card);
         todoList = (ArrayList<ToDoModel>) getIntent().getSerializableExtra("todoList");
 
-        cardAi.setOnClickListener(v->{
-            Intent intent=new Intent(MainActivity.this, AiAssistant.class);
+        cardAi.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AiAssistant.class);
             startActivity(intent);
         });
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
         password = intent.getStringExtra("password");
-        userName=intent.getStringExtra("userName");
+        userName = intent.getStringExtra("userName");
         floatAction.setOnClickListener(v -> {
             Dialog dialog = new Dialog(MainActivity.this);
             dialog.setContentView(R.layout.add_task_lay);
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 txtProfile.setOnClickListener(v -> {
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra("email", email);
-                    intent.putExtra("userName",userName);
+                    intent.putExtra("userName", userName);
                     Log.d("MainUserName", userName);
                     startActivity(intent);
                     dialog3.dismiss();
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new ToDoAdapter(todoList, this,email);
+        adapter = new ToDoAdapter(todoList, this, email);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -224,6 +226,63 @@ public class MainActivity extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        new android.os.Handler().postDelayed(
+////                this::refreshTaskList,
+//                500 // 0.5 second delay
+//        );
+//    }
 
+
+//    public void refreshTaskList() {
+//        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//        String url = "http://192.168.142.150:8080/users/get_task?email=" + email;
+//        Log.d("TAG", url);
+//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+//                response -> {
+//                    todoList.clear();
+////                    for (int i = 0; i < response.length(); i++) {
+////                        try {
+////                            JSONObject task = response.getJSONObject(i);
+////                            String title = task.getString("tittle");
+////                            String description = task.getString("description");
+////                            boolean completed = task.getBoolean("completed");
+////
+////                            todoList.add(new ToDoModel(title, description, completed));
+////                        } catch (JSONException e) {
+////                            e.printStackTrace();
+////                        }
+//
+//                        for (int i = 0; i < response.length(); i++) {
+//                            JSONObject obj = null;
+//                            try {
+//                                obj = response.getJSONObject(i);
+//
+//
+//                                ToDoModel model = new ToDoModel(
+//                                        obj.getString("tittle"),
+//                                        obj.getString("task"),
+//                                        obj.getBoolean("completed")
+//                                );
+//                                // ⚠️ Did you forget this?
+//                                model.setId(obj.getInt("id"));
+//                                todoList.add(model);
+//                            } catch (JSONException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//
+//                        }
+//
+//                    adapter.notifyDataSetChanged();
+//                },
+//                error -> {
+//
+//                    Toast.makeText(MainActivity.this, "Failed to fetch tasks", Toast.LENGTH_SHORT).show();
+//                }
+//        );
+//
+//        requestQueue.add(jsonArrayRequest);
+//    }
 }
-

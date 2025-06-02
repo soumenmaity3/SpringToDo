@@ -55,13 +55,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
         holder.txtTitle.setText(model.getTitle());
         holder.btnComplete.setText("Complete");
         holder.btnComplete.setOnClickListener(v -> {
-            updateCompleteStatus(model.getId());
-            if (complete) {
-                model.setComplete(true);
-                arrayList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, arrayList.size());
-            }
+            updateCompleteStatus(model.getId(),position);
+            Log.d("ModelId", String.valueOf( model.getId()));
         });
 
         holder.cardView.setOnLongClickListener(v->{
@@ -200,25 +195,27 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.viewHolder> {
         }
     }
 
-    private void updateCompleteStatus(int todoId) {
+    private void updateCompleteStatus(int todoId,int position) {
         String url = "http://192.168.142.150:8080/users/updateComplete/" + todoId;
-
+        Log.d("URL from to", url);
         StringRequest request = new StringRequest(Request.Method.PUT, url,
                 response -> {
                     Toast.makeText(context, "Task marked complete in backend!", Toast.LENGTH_SHORT).show();
-                    complete=true;
+
+                    Toast.makeText(context, "Task marked complete in backend!", Toast.LENGTH_SHORT).show();
+                    arrayList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, arrayList.size());
                 },
                 error -> {
+                    Log.e("VOLLEY_ERROR", "Error: " + error.getMessage(), error);
                     Toast.makeText(context, "Failed to update backend", Toast.LENGTH_SHORT).show();
-                    complete=false;
                 }
         );
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
-
     }
-
 
 
 }

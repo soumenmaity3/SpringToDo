@@ -9,6 +9,7 @@ public class ToDoModel implements Serializable {
     private boolean complete;
     int id;
 
+
     public ToDoModel(String title, String task, boolean complete) {
         this.title = title;
         this.task = task;
