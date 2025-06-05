@@ -26,8 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
-    Button btnReset,btnOtp;
-    TextInputEditText edtEmail,edtOtp;
+    Button btnReset, btnOtp;
+    TextInputEditText edtEmail, edtOtp;
     TextView txtBack;
     private long backPressedTime;
     Toast backToast;
@@ -47,8 +47,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnReset = findViewById(R.id.btnSendReset);
         edtEmail = findViewById(R.id.edtEmail);
         txtBack = findViewById(R.id.tvBackToLogin);
-        edtOtp=findViewById(R.id.edtOtp);
-        btnOtp=findViewById(R.id.otpButton);
+        edtOtp = findViewById(R.id.edtOtp);
+        btnOtp = findViewById(R.id.otpButton);
 
         txtBack.setOnClickListener(v -> {
             Intent intent = new Intent(ForgotPasswordActivity.this, SignInActivity.class);
@@ -60,8 +60,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             String email = edtEmail.getText().toString();
             checkServer(ForgotPasswordActivity.this, email);
         });
-        btnOtp.setOnClickListener(v->{
-
+        btnOtp.setOnClickListener(v -> {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String url = "http://192.168.169.150:8080/users/check-email?email=" + edtEmail.getText().toString();
             Log.d("ForgotPassword", edtEmail.getText().toString());
@@ -69,7 +68,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    sendOtpToEmail();
+                    sendAndStoreOtpToEmail();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -81,6 +80,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
             Toast.makeText(this, "OTP", Toast.LENGTH_SHORT).show();
         });
+
 
     }
 
@@ -96,26 +96,27 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Intent intent = new Intent(context, ResetPassword.class);
-                        intent.putExtra("email", email);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
-                        RequestQueue requestQueue1=Volley.newRequestQueue(context);
+                        RequestQueue requestQueue1 = Volley.newRequestQueue(context);
                         if (edtOtp.getText().toString() == null) {
                             edtOtp.setError("Enter Otp.");
                             return;
                         }
-                        String otp=edtOtp.getText().toString();
-                        String url="http://192.168.169.150:8080/users/otp-checker?otp="+otp;
-                        StringRequest stringRequest1=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                        String otp = edtOtp.getText().toString();
+                        String url = "http://192.168.169.150:8080/users/otp-checker";
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("email", email);
+                            jsonObject.put("otp", otp);
+                        } catch (Exception e) {
+                            Toast.makeText(ForgotPasswordActivity.this, "Nothing", Toast.LENGTH_SHORT).show();
+                        }
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, jsonObject, new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(String response) {
-                                Intent intent = new Intent(context, ResetPassword.class);
+                            public void onResponse(JSONObject response) {
+                                Intent intent = new Intent(ForgotPasswordActivity.this, ResetPassword.class);
                                 intent.putExtra("email", email);
                                 startActivity(intent);
                                 finish();
-                                Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -123,7 +124,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                             }
                         });
-                        requestQueue1.add(stringRequest1);
+                        requestQueue.add(jsonObjectRequest);
 
 
                     }
@@ -156,35 +157,84 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
     }
 
-    private void sendOtpToEmail() {
-        String email = edtEmail.getText().toString().trim();
+    private void sendAndStoreOtpToEmail() {
+        String email = edtEmail.getText().toString();
 
-        if (email.isEmpty()) {
-            Toast.makeText(this, "Enter email address", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String url = "http://192.168.169.150:8080/users/send-otp";
-
-        JSONObject jsonBody = new JSONObject();
+        RequestQueue requestSendOtp = Volley.newRequestQueue(this);
+        String otpSendUrl = "http://192.168.169.150:8080/users/send-otp";
+        JSONObject sendOtpBody = new JSONObject();
         try {
-            jsonBody.put("email", email);
+            sendOtpBody.put("email", email);
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+        JsonObjectRequest otpRequest = new JsonObjectRequest(Request.Method.POST, otpSendUrl, sendOtpBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(ForgotPasswordActivity.this, "Otp Send Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ForgotPasswordActivity.this, "Have an error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, url, jsonBody,
-                response -> {
-                    Toast.makeText(this, "OTP sent successfully!", Toast.LENGTH_SHORT).show();
-                    Log.d("VolleySuccess", response.toString());
-                },
-                error -> {
-                    Log.e("VolleyError2", error.toString());
-                }
-        );
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(request);
+        requestSendOtp.add(otpRequest);
     }
+
+    //    }
+//    String email = edtEmail.getText().toString().trim();
+//
+//        if (email.isEmpty()) {
+//        Toast.makeText(this, "Enter email address", Toast.LENGTH_SHORT).show();
+//        return;
+//    }
+//
+//    String url = "http://192.168.169.150:8080/users/send-otp";
+//
+//    JSONObject jsonBody = new JSONObject();
+//        try {
+//        jsonBody.put("email", email);
+//    } catch (JSONException e) {
+//        e.printStackTrace();
+//    }
+//
+//    JsonObjectRequest request = new JsonObjectRequest(
+//            Request.Method.POST, url, jsonBody,
+//            response -> {
+//                Toast.makeText(this, "OTP sent successfully!", Toast.LENGTH_SHORT).show();
+//
+//                JSONObject storeOtpBody = new JSONObject();
+//                try {
+//                    JSONObject userObject = new JSONObject();
+//                    userObject.put("email", email); // Pass user email
+//
+//                    storeOtpBody.put("user", userObject); // user object
+//                    storeOtpBody.put("used", false);      // used = false
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                JsonObjectRequest storeOtpRequest = new JsonObjectRequest(
+//                        Request.Method.POST, url2, storeOtpBody,
+//                        response1 -> Toast.makeText(ForgotPasswordActivity.this, "Stored", Toast.LENGTH_SHORT).show(),
+//                        error -> Log.e("VolleyError", error.toString())
+//                );
+//
+//                requestQueue.add(storeOtpRequest);
+//
+//
+//                Log.d("VolleySuccess", response.toString());
+//            },
+//            error -> {
+//                Log.e("VolleyError2", error.toString());
+//            }
+//    );
+//
+//    RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(request);
+//}
 }
