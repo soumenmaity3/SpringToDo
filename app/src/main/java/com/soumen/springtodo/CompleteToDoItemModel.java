@@ -1,10 +1,10 @@
 package com.soumen.springtodo;
 
-public class CompleteToDoItem {
+public class CompleteToDoItemModel {
     private String title;
     private String description;
 
-    public CompleteToDoItem(String title, String description) {
+    public CompleteToDoItemModel(String title, String description) {
         this.title = title;
         this.description = description;
     }

@@ -106,11 +106,11 @@ public class SignInActivity extends AppCompatActivity {
 
     public void checkServer(Context context, String userEmail, String password) {
         IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(context);
-        isServerOnOrOff.checkServerStatus("http://192.168.142.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+        isServerOnOrOff.checkServerStatus("http://192.168.169.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
             @Override
             public void onOnline() {
                 RequestQueue requestQueue = Volley.newRequestQueue(SignInActivity.this);
-                String url = "http://192.168.142.150:8080/users/login";
+                String url = "http://192.168.169.150:8080/users/login";
 
                 JSONObject jsonBody = new JSONObject();
                 try {
@@ -203,7 +203,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void userName(String email, VolleyCallback callback) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.142.150:8080/users/user-name?email=" + email;
+        String url = "http://192.168.169.150:8080/users/user-name?email=" + email;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

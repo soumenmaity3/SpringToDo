@@ -5,30 +5,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
-    android:padding="25dp"
-    android:fillViewport="true">
+    android:background="?attr/colorSurface"
+    android:padding="24dp"
+    android:fillViewport="true"
+    tools:context=".SettingActivity">
 
     <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
         android:paddingTop="48dp"
         android:paddingBottom="32dp"
-        android:gravity="center_horizontal"
-        tools:context=".SettingActivity">
+        android:gravity="center_horizontal">
 
         <!-- Heading -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Settings"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textStyle="bold"
-            android:layout_marginBottom="48dp"
-            android:textColor="?android:textColorPrimary" />
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginBottom="48dp" />
 
         <!-- Clear History Button -->
         <com.google.android.material.button.MaterialButton
@@ -40,11 +39,12 @@
             android:text="See Completed Task"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            app:backgroundTint="#DB13D2"
-            app:cornerRadius="12dp"
-            app:elevation="4dp"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="16dp"
+            app:elevation="6dp"
+            app:icon="@drawable/note"
             app:iconGravity="textStart"
-            app:icon="@drawable/note"/>
+            app:iconPadding="12dp" />
 
         <!-- Recover Data Button -->
         <com.google.android.material.button.MaterialButton
@@ -56,12 +56,14 @@
             android:text="Recover Your Data"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            app:backgroundTint="@android:color/holo_green_dark"
-            app:cornerRadius="12dp"
-            app:elevation="4dp"
+            app:backgroundTint="?attr/colorSecondary"
+            app:cornerRadius="16dp"
+            app:elevation="6dp"
             app:icon="@drawable/recovery"
-            app:iconGravity="textStart"/>
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
 
+        <!-- Clear History Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_delete_history"
             style="@style/Widget.MaterialComponents.Button"
@@ -71,12 +73,12 @@
             android:text="Clear History"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            app:backgroundTint="@color/colorAccent"
-            app:cornerRadius="12dp"
-            app:elevation="4dp"
+            app:backgroundTint="?attr/colorError"
+            app:cornerRadius="16dp"
+            app:elevation="6dp"
+            app:icon="@drawable/history"
             app:iconGravity="textStart"
-            app:icon="@drawable/history"/>
-
+            app:iconPadding="12dp" />
 
         <!-- Delete Account Button -->
         <com.google.android.material.button.MaterialButton
@@ -89,20 +91,38 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             app:backgroundTint="@android:color/holo_red_dark"
-            app:cornerRadius="12dp"
-            app:elevation="4dp"
+            app:cornerRadius="16dp"
+            app:elevation="6dp"
+            app:icon="@drawable/delete_user"
             app:iconGravity="textStart"
-            app:icon="@drawable/delete_user"/>
+            app:iconPadding="12dp" />
+
+        <!-- About App Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_About_App"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About This App"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="?attr/colorSecondaryVariant"
+            app:cornerRadius="16dp"
+            app:elevation="6dp"
+            app:icon="@drawable/info"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
 
         <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginTop="32dp"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:visibility="gone" />
+            android:visibility="gone"
+            style="?android:attr/progressBarStyleLarge" />
 
     </LinearLayout>
 </ScrollView>

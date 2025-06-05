@@ -1,6 +1,5 @@
 package com.soumen.springtodo;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -26,7 +25,7 @@ import java.util.List;
 public class LostHistoryActivity extends AppCompatActivity {
 
     private LostHistoryAdapter adapter;
-    private List<CompleteToDoItem> todoList = new ArrayList<>();
+    private List<CompleteToDoItemModel> todoList = new ArrayList<>();
 
 
     @Override
@@ -51,7 +50,7 @@ public class LostHistoryActivity extends AppCompatActivity {
 
     }
     private void fetchCompletedTasks(String email) {
-        String url = "http://192.168.142.150:8080/users/completed_task?email="+email;
+        String url = "http://192.168.169.150:8080/users/completed_task?email="+email;
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -66,7 +65,7 @@ public class LostHistoryActivity extends AppCompatActivity {
                             JSONObject obj = response.getJSONObject(i);
                             String title = obj.getString("tittle");
                             String description = obj.getString("description");
-                            todoList.add(new CompleteToDoItem(title, description));
+                            todoList.add(new CompleteToDoItemModel(title, description));
                         }
                         adapter.notifyDataSetChanged();
                     } catch (Exception e) {

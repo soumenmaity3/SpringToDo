@@ -48,7 +48,7 @@ public class ResetPassword extends AppCompatActivity {
             }
             RequestQueue requestQueue = Volley.newRequestQueue(ResetPassword.this);
             String password = newPasswordEditText.getText().toString();
-            String url = "http://192.168.142.150:8080/users/reset-password?email=" + email + "&password=" + password;
+            String url = "http://192.168.169.150:8080/users/reset-password?email=" + email + "&password=" + password;
 
             StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                 @Override
@@ -74,17 +74,30 @@ public class ResetPassword extends AppCompatActivity {
     public boolean passwordChecker() {
         String password = newPasswordEditText.getText().toString().trim();
         String confirm = confirmPasswordEditText.getText().toString().trim();
-
-        if (password.isEmpty() || confirm.isEmpty()) {
-            newPasswordEditText.setError("Password can't be empty.");
+        if (password.isEmpty()) {
+            newPasswordEditText.setError("Password cannot be empty.");
             return false;
-        } else if (!password.equals(confirm)) {
-            confirmPasswordEditText.setError("Passwords do not match!");
+        }
+        if (confirm.isEmpty()) {
+            confirmPasswordEditText.setError("Please confirm your password.");
             return false;
-        } else {
-            return true;
+        }
+        if (password.length() < 8) {
+            newPasswordEditText.setError("Password must be at least 8 characters.");
+            return false;
+        }
+        String passwordPattern = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
+        if (!password.matches(passwordPattern)) {
+            newPasswordEditText.setError("Password must contain uppercase, number, and special character.");
+            return false;
         }
 
+        if (!password.equals(confirm)) {
+            confirmPasswordEditText.setError("Passwords do not match.");
+            return false;
+        }
+
+        return true;
     }
 
     @Override

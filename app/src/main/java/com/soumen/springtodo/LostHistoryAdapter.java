@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class LostHistoryAdapter extends RecyclerView.Adapter<LostHistoryAdapter.viewHolder> {
-    List<CompleteToDoItem> completeToDoItemList;
+    List<CompleteToDoItemModel> completeToDoItemList;
     String email;
 
-    public LostHistoryAdapter(List<CompleteToDoItem> completeToDoItemList) {
+    public LostHistoryAdapter(List<CompleteToDoItemModel> completeToDoItemList) {
         this.completeToDoItemList = completeToDoItemList;
     }
 
@@ -28,7 +28,7 @@ public class LostHistoryAdapter extends RecyclerView.Adapter<LostHistoryAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull LostHistoryAdapter.viewHolder holder, int position) {
-        CompleteToDoItem list=completeToDoItemList.get(position);
+        CompleteToDoItemModel list=completeToDoItemList.get(position);
         holder.txtTitle.setText(list.getTitle());
         holder.txtDescription.setText(list.getDescription());
     }

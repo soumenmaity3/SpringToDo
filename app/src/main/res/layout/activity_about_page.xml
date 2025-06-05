@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutPageActivity">
+    <!-- Content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/about_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:clipToPadding="false"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="100dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <!-- App Icon -->
+                <ImageView
+                    android:id="@+id/app_icon"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:src="@drawable/to_do"
+                    android:contentDescription="@string/app_name"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- App Title -->
+                <TextView
+                    android:id="@+id/app_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ToDoList"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Description -->
+                <TextView
+                    android:id="@+id/app_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ToDoList is a cloud-based task manager app that lets you track your tasks anywhere, anytime. All your tasks are securely stored in the cloud."
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:lineHeight="24sp"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.12"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Features Title -->
+                <TextView
+                    android:id="@+id/features_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Key Features"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorPrimary"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Features List -->
+                <TextView
+                    android:id="@+id/features_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Add, update, delete tasks\n• Cloud-based storage\n• Fast and responsive\n• Clean user interface\n• Secure backend integration"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:lineHeight="22sp"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Developer Title -->
+                <TextView
+                    android:id="@+id/developer_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Developer"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorPrimary"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Developer Info -->
+                <TextView
+                    android:id="@+id/developer_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Soumen Maity\nEmail: soumen3maity@gmail.com\nGitHub: github.com/soumenmaity3\nPortfolio: soumen-portfolio-java.netlify.app/"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:lineHeight="22sp"
+                    android:autoLink="all"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Version Info -->
+                <TextView
+                    android:id="@+id/version_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Version: 1.0.0"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating Contact Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Contact Developer"
+        android:src="@drawable/ic_email_24"
+        app:backgroundTint="#DD2929"
+        app:tint="@android:color/white"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

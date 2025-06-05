@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addTask(String email, String title, String description) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        String url = "http://192.168.142.150:8080/users/add_task";
+        String url = "http://192.168.169.150:8080/users/add_task";
 
         JSONObject userObject = new JSONObject();
         try {
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    public void refreshTaskList() {
 //        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        String url = "http://192.168.142.150:8080/users/get_task?email=" + email;
+//        String url = "http://192.168.169.150:8080/users/get_task?email=" + email;
 //        Log.d("TAG", url);
 //        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
 //                response -> {

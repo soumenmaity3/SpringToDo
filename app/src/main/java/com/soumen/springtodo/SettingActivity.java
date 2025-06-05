@@ -87,7 +87,7 @@ public class SettingActivity extends AppCompatActivity {
                                 }
                                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
 
-                                String url = "http://192.168.142.150:8080/users/delete-history?email=" + email;
+                                String url = "http://192.168.169.150:8080/users/delete-history?email=" + email;
 
                                 StringRequest stringRequest = new StringRequest(
                                         Request.Method.DELETE,
@@ -157,7 +157,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
-                String url = "http://192.168.142.150:8080/users/recover-data?email=" + email;
+                String url = "http://192.168.169.150:8080/users/recover-data?email=" + email;
 
                 StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                     @Override
@@ -198,7 +198,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(SettingActivity.this);
-                String url = "http://192.168.142.150:8080/users/delete-user?email=" + email + "&password=" + password2;
+                String url = "http://192.168.169.150:8080/users/delete-user?email=" + email + "&password=" + password2;
                 Log.d("null email",url);
                 StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                         response -> {
@@ -218,6 +218,11 @@ public class SettingActivity extends AppCompatActivity {
             });
 
             dialog.show();
+        });
+        Button aboutApp=findViewById(R.id.button_About_App);
+        aboutApp.setOnClickListener(v->{
+            Intent intent1=new Intent(SettingActivity.this,AboutPageActivity.class);
+            startActivity(intent1);
         });
 
     }
