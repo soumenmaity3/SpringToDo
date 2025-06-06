@@ -57,4 +57,18 @@
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="16dp"
         android:visibility="gone"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRefresh"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sendRequest"
+        android:layout_marginBottom="-54dp"
+        android:text="Refresh"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/colorAccent"
+        app:cornerRadius="16dp"
+        android:visibility="gone"/>
+
 </RelativeLayout>

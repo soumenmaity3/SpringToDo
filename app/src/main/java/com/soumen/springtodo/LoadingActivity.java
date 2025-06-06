@@ -1,5 +1,8 @@
 package com.soumen.springtodo;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -29,8 +32,9 @@ public class LoadingActivity extends AppCompatActivity {
     ProgressBar pgBar;
     ImageView serverError;
     TextView txtSever;
-    MaterialButton sendRequest;
+    MaterialButton sendRequest,btnRefresh;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,24 +44,30 @@ public class LoadingActivity extends AppCompatActivity {
         serverError = findViewById(R.id.serverError);
         txtSever = findViewById(R.id.txtSever);
         sendRequest = findViewById(R.id.sendRequest);
-        IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(LoadingActivity.this);
-        new Handler().postDelayed(() -> isServerOnOrOff.checkServerStatus("http://192.168.169.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
-            @Override
-            public void onOnline() {
-                Intent intent = new Intent(LoadingActivity.this, OptionPage.class);
-                startActivity(intent);
-                finish();
-            }
+        btnRefresh=findViewById(R.id.btnRefresh);
+        checkServer();
 
-            @Override
-            public void onOffline() {
-                serverError.setVisibility(View.VISIBLE);
-                txtSever.setVisibility(View.VISIBLE);
-                sendRequest.setVisibility(View.VISIBLE);
-                Toast.makeText(LoadingActivity.this, "Server is offline", Toast.LENGTH_LONG).show();
-                pgBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-        }), 1000);
+        btnRefresh.setOnClickListener(v->{
+            checkServer();
+        });
+//        IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(LoadingActivity.this);
+//        new Handler().postDelayed(() -> isServerOnOrOff.checkServerStatus("http://192.168.169.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+//            @Override
+//            public void onOnline() {
+//                Intent intent = new Intent(LoadingActivity.this, OptionPage.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//
+//            @Override
+//            public void onOffline() {
+//                serverError.setVisibility(View.VISIBLE);
+//                txtSever.setVisibility(View.VISIBLE);
+//                sendRequest.setVisibility(View.VISIBLE);
+//                Toast.makeText(LoadingActivity.this, "Server is offline", Toast.LENGTH_LONG).show();
+//                pgBar.setVisibility(ProgressBar.INVISIBLE);
+//            }
+//        }), 1000);
 
         sendRequest.setOnClickListener(v -> {
             String email = "sm8939912@gmail.com";
@@ -73,5 +83,31 @@ public class LoadingActivity extends AppCompatActivity {
         });
     }
 
+    public void checkServer() {
+        serverError.setVisibility(INVISIBLE);
+        txtSever.setVisibility(INVISIBLE);
+        sendRequest.setVisibility(INVISIBLE);
+        pgBar.setVisibility(VISIBLE);
+        btnRefresh.setVisibility(INVISIBLE);
+        IsServerOnOrOff isServerOnOrOff = new IsServerOnOrOff(LoadingActivity.this);
+        new Handler().postDelayed(() -> isServerOnOrOff.checkServerStatus("http://192.168.169.150:8080/users/ping", new IsServerOnOrOff.ServerStatusCallback() {
+            @Override
+            public void onOnline() {
+                Intent intent = new Intent(LoadingActivity.this, OptionPage.class);
+                startActivity(intent);
+                finish();
+            }
 
+            @Override
+            public void onOffline() {
+                serverError.setVisibility(VISIBLE);
+                txtSever.setVisibility(VISIBLE);
+                sendRequest.setVisibility(VISIBLE);
+                Toast.makeText(LoadingActivity.this, "Server is offline", Toast.LENGTH_LONG).show();
+                pgBar.setVisibility(INVISIBLE);
+                btnRefresh.setVisibility(VISIBLE);
+            }
+        }), 1000);
+
+    }
 }
