@@ -29,14 +29,15 @@ android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtSignIn"
+        android:hint="Enter Your Email"
         android:layout_marginBottom="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtSName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Your Email"
             android:textSize="16sp"
+            android:inputType="textEmailAddress"
             android:backgroundTint="@color/colorAccent"
             android:padding="16dp"/>
     </com.google.android.material.textfield.TextInputLayout>
