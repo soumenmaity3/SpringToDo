@@ -51,7 +51,7 @@ public class AiAssistant extends AppCompatActivity {
             String msg = messageEditText.getText().toString().trim();
             if (!msg.isEmpty()) {
                 sendMessage(msg, true);
-                sendMessage("This is a response from AI", false);
+                sendMessage("AI is coming soon.", false);
                 messageEditText.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);

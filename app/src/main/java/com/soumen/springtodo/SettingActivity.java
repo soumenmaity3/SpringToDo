@@ -183,6 +183,29 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         btnDeleteAccount.setOnClickListener(v -> {
+            Dialog dialog=new Dialog(this);
+            dialog.setContentView(R.layout.delete_account_dailog);
+            Button delete=dialog.findViewById(R.id.delete_button);
+            Button cancele=dialog.findViewById(R.id.cancel_button);
+            delete.setOnClickListener(vi->{
+                account();
+                dialog.dismiss();
+            });
+            cancele.setOnClickListener(vi->{
+                dialog.dismiss();
+            });
+            dialog.show();
+        });
+
+
+        Button aboutApp=findViewById(R.id.button_About_App);
+        aboutApp.setOnClickListener(v->{
+            Intent intent1=new Intent(SettingActivity.this,AboutPageActivity.class);
+            startActivity(intent1);
+        });
+    }
+
+    public void account(){
             Dialog dialog = new Dialog(SettingActivity.this);
             dialog.setContentView(R.layout.enter_repassword);
 
@@ -218,12 +241,7 @@ public class SettingActivity extends AppCompatActivity {
             });
 
             dialog.show();
-        });
-        Button aboutApp=findViewById(R.id.button_About_App);
-        aboutApp.setOnClickListener(v->{
-            Intent intent1=new Intent(SettingActivity.this,AboutPageActivity.class);
-            startActivity(intent1);
-        });
+
 
     }
 }
